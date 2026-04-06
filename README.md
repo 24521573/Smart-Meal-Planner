@@ -73,9 +73,7 @@ $$TDEE = BMR \times Activity\_Level$$
 ### 3.3. Đánh giá lười & Quản lý trạng thái (Lazy Evaluation State Management)
 Loại bỏ hoàn toàn tiến trình ngầm (Cronjobs/Celery) để tiết kiệm tài nguyên.
 * **Cơ chế:** Chỉ tính toán lại State khi có Request gọi API bằng cách đo lường `Time-Series Delta` giữa `last_login_date` và `current_date`.
-* **Tính điểm chuỗi (Gamification Streak):**
-  $$Streak_{new} = \begin{cases} Streak_{old} + 1 & \text{if } \Delta days = 1 \\ 1 & \text{if } \Delta days > 1 \end{cases}$$
-
+* 
 ---
 
 ## 4. PIPELINE HỆ THỐNG GỢI Ý (RECOMMENDATION PIPELINE)
