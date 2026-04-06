@@ -27,7 +27,7 @@ export default function App() {
   const [error, setError] = useState('');
   
   // ĐƯỜNG DẪN BACKEND RENDER CỦA EM
-  const API_BASE_URL = 'https://smart-meal-planner-hni4.onrender.com';
+  const API_BASE_URL = 'https://smart-meal-planner-71ak.onrender.com';
   
   const SESSION_KEY = 'smart_meal_session';
   const SESSION_TIMEOUT = 10 * 60 * 1000;
