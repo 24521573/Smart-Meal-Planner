@@ -25,6 +25,10 @@ export default function App() {
   const [showStats, setShowStats] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  
+  // ĐƯỜNG DẪN BACKEND RENDER CỦA EM
+  const API_BASE_URL = 'https://smart-meal-planner-hni4.onrender.com';
+  
   const SESSION_KEY = 'smart_meal_session';
   const SESSION_TIMEOUT = 10 * 60 * 1000;
 
@@ -71,7 +75,7 @@ export default function App() {
         age: Number(age), weight: Number(weight), height: Number(height),
         gender, activity_level: Number(activity), allergies
       };
-      const res = await fetch('http://127.0.0.1:8000/register', {
+      const res = await fetch(`${API_BASE_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -88,7 +92,7 @@ export default function App() {
     e.preventDefault();
     setLoading(true); setError('');
     try {
-      const res = await fetch('http://127.0.0.1:8000/login', {
+      const res = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -112,7 +116,7 @@ export default function App() {
   const fetchMeals = async () => {
     setLoading(true); setError('');
     try {
-      const res = await fetch('http://127.0.0.1:8000/recommend', {
+      const res = await fetch(`${API_BASE_URL}/recommend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user?.user_id || 1, location, filter_type: filterType })
@@ -130,7 +134,7 @@ export default function App() {
   const handleConfirm = async (food) => {
     if (!window.confirm(`Xác nhận ăn món ${food.name} với giá ${Number(food.price).toLocaleString()}đ?`)) return;
     try {
-      const res = await fetch('http://127.0.0.1:8000/confirm', {
+      const res = await fetch(`${API_BASE_URL}/confirm`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.user_id, food_name: food.name, price: food.price, calories: food.calories, image_url: food.image_url || "", map_url: food.map_url || "" })
@@ -154,7 +158,7 @@ export default function App() {
       return;
     }
     try {
-      const res = await fetch('http://127.0.0.1:8000/topup', {
+      const res = await fetch(`${API_BASE_URL}/topup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.user_id, amount: amount })
@@ -173,7 +177,7 @@ export default function App() {
 
   const fetchHistory = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/history/${user.user_id}`);
+      const res = await fetch(`${API_BASE_URL}/history/${user.user_id}`);
       const data = await res.json();
       setHistoryList(data.history);
       setShowHistory(true);
@@ -182,7 +186,7 @@ export default function App() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/stats/${user.user_id}`);
+      const res = await fetch(`${API_BASE_URL}/stats/${user.user_id}`);
       const data = await res.json();
       setStatsData(data.stats);
       setShowStats(true);
@@ -191,7 +195,7 @@ export default function App() {
 
   const handleRate = async (historyId, ratingValue) => {
     try {
-      const res = await fetch('http://127.0.0.1:8000/rate', {
+      const res = await fetch(`${API_BASE_URL}/rate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ history_id: historyId, rating: ratingValue })
