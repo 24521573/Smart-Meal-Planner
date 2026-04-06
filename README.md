@@ -7,11 +7,9 @@
 # TECHNICAL DESIGN DOCUMENT (TDD): SMART MEAL PLANNER RECOMMENDATION ENGINE
 **Dự án:** Smart Meal Planner
 
-🚀 **Live Demo:** [https://recommendation-items-system.vercel.app/](https://recommendation-items-system.vercel.app/)
+🚀 **Live Demo:** [https://smart-meal-planneruit.vercel.app/](https://smart-meal-planneruit.vercel.app/)
 
-⚡ **API Backend:** [https://recommendation-items-system.onrender.com/products](https://recommendation-items-system.onrender.com/products)
-
-> **💡 Lưu ý khi test:** Hệ thống Backend được triển khai trên nền tảng miễn phí (Render Free Tier). Nếu web mất khoảng 30-50 giây để tải sản phẩm ở lần truy cập đầu tiên, xin vui lòng đợi một chút để server "thức dậy". Sau đó hệ thống AI sẽ gợi ý với tốc độ cực nhanh!
+⚡ **API Backend Docs (Swagger UI):** [https://smart-meal-planner-71ak.onrender.com/docs](https://smart-meal-planner-71ak.onrender.com/docs)
 
 ---
 
@@ -48,12 +46,11 @@ Hệ thống Smart Meal Planner được thiết kế dựa trên kiến trúc *
 ### 2.2. Giả định Kỹ thuật (Assumptions)
 1. **Implicit Feedback:** Bữa ăn chưa đánh giá sao được gán trọng số $W = 3$ (Hài lòng trung tính).
 2. **Không gian Vector:** Hai món ăn khác nhau về lượng Calo tổng nhưng có cùng tỷ lệ Pro/Carb/Fat sẽ có góc Vector tương đồng ($\approx 0^{\circ}$).
-3. **Data Integrity:** Dữ liệu dinh dưỡng trong `mock_data.json` là chính xác và tĩnh trong suốt runtime.
+3. **Data Integrity:** Dữ liệu dinh dưỡng được mô phỏng giả lập là chính xác và tĩnh trong suốt runtime.
 
 ### 2.3. Ràng buộc Hệ thống (Constraints)
 * **Zero-Tolerance Allergy:** Ràng buộc cứng. Thực phẩm chứa dị nguyên khớp với User Profile bị loại bỏ vĩnh viễn ở khâu Retrieval.
 * **Budget Ceiling:** Không cho phép xác nhận giao dịch nếu giá trị thực phẩm lớn hơn Ngân sách còn lại.
-* **Database Concurrency:** Sử dụng SQLite, bị giới hạn I/O khi có lượng lớn Concurrent Writes.
 
 ---
 
@@ -92,7 +89,7 @@ Giảm không gian tìm kiếm từ tập $D$ xuống tập khả thi $C$ qua **
 * Lọc ngữ cảnh: `is_canteen_open` (Dựa trên giờ thực tế).
 
 ### Phase 2: Feature Engineering & Profiling (Trích xuất đặc trưng)
-Ánh xạ người dùng và món ăn vào Không gian Vector 4 chiều ($R^4$): $\vec{v} = [Calories, Protein, Carb, Fat]$.
+Ánh xạ người dùng và món ăn vào Không gian Vector 4 chiều ($R^4$): $\vec{v} = [\text{Calories}, \text{Protein}, \text{Carb}, \text{Fat}]$.
 * **Item Profile ($\vec{I_j}$):** Trích xuất từ metadata món ăn.
 * **Dynamic User Profile ($\vec{U}$):** Tính toán Real-time từ `MealHistory` bằng **Trung bình có trọng số (Weighted Average)**.
 
