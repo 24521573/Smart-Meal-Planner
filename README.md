@@ -1,8 +1,29 @@
+<p align="center">
+  <img src="https://www.uit.edu.vn/strapi/uploads/LOGO_VNA_c054066f11_7d72ba6441.png" alt="Trường Đại học Công nghệ Thông tin" width="550" />
+</p>
+
+<h1 align="center">CS117 - TƯ DUY TÍNH TOÁN</h1>
+
 # TECHNICAL DESIGN DOCUMENT (TDD): SMART MEAL PLANNER RECOMMENDATION ENGINE
 **Dự án:** Smart Meal Planner
-**Chủ nhiệm dự án:** Bùi Trọng Tấn (MSSV: 24521573) - Khoa Khoa học Máy tính, UIT
-**Đơn vị:** University of Information Technology (VNU-HCM)
-**Phiên bản:** 3.0 (Final Release)
+
+🚀 **Live Demo:** [https://recommendation-items-system.vercel.app/](https://recommendation-items-system.vercel.app/)
+
+⚡ **API Backend:** [https://recommendation-items-system.onrender.com/products](https://recommendation-items-system.onrender.com/products)
+
+> **💡 Lưu ý khi test:** Hệ thống Backend được triển khai trên nền tảng miễn phí (Render Free Tier). Nếu web mất khoảng 30-50 giây để tải sản phẩm ở lần truy cập đầu tiên, xin vui lòng đợi một chút để server "thức dậy". Sau đó hệ thống AI sẽ gợi ý với tốc độ cực nhanh!
+
+---
+
+# GIỚI THIỆU MÔN HỌC 
+
+|||
+| :--- | :--- |
+| **Môn học** | Computational Thinking |
+| **Mã lớp** | CS117.Q22 |
+| **Giảng viên** | PGS.TS Ngô Đức Thành |
+| **Sinh viên** | Bùi Trọng Tấn |
+| **MSSV** | 24521573 |
 
 ---
 
