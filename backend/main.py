@@ -2,7 +2,7 @@ import sqlite3
 import json
 import math
 import calendar
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone # Thêm timezone ở đây
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -80,13 +80,17 @@ class RateRequest(BaseModel):
 class TopUpRequest(BaseModel):
     user_id: int; amount: float
 
+# HÀM MỚI: Luôn lấy giờ Việt Nam (UTC+7) bất kể server đặt ở đâu
+def get_vn_now():
+    return datetime.now(timezone(timedelta(hours=7)))
+
 def check_and_reset_daily_stats(user_id: int):
     conn = get_db_connection()
     cursor = conn.cursor()
     user = cursor.execute("SELECT * FROM Users WHERE user_id = ?", (user_id,)).fetchone()
     
     if user:
-        now = datetime.now()
+        now = get_vn_now() # Dùng giờ VN
         current_date_str = now.strftime("%Y-%m-%d")
         last_login_str = user['last_login_date']
         
@@ -133,7 +137,7 @@ def register_user(req: RegisterRequest):
     else: bmr = (10 * req.weight) + (6.25 * req.height) - (5 * req.age) - 161
     tdee = bmr * req.activity_level
     
-    now = datetime.now()
+    now = get_vn_now() # Dùng giờ VN
     days_in_month = calendar.monthrange(now.year, now.month)[1]
     remaining_days = days_in_month - now.day + 1
     
@@ -209,8 +213,11 @@ def recommend_meals(request: UserRequest):
     history = conn.execute('''SELECT f.name, mh.rating FROM MealHistory mh JOIN Foods f ON mh.food_id = f.food_id WHERE mh.user_id = ?''', (request.user_id,)).fetchall()
     conn.close()
     user_allergies = [a.strip() for a in user['allergies'].split(',')] if user['allergies'] else []
-    current_hour = datetime.now().hour
-    is_canteen_open = 6 <= current_hour < 14
+    
+    # Đã sửa lại lỗi Căn tin: Lấy giờ VN và check mở cửa từ 5h đến 15h59 (5 <= hour < 16)
+    current_hour = get_vn_now().hour 
+    is_canteen_open = 5 <= current_hour < 16
+    
     available_foods = []
     for food in foods_data:
         if request.location not in food["location"]: continue
@@ -218,6 +225,7 @@ def recommend_meals(request: UserRequest):
         if any(allergy in food_allergens for allergy in user_allergies if allergy): continue
         food["is_closed"] = True if "căn tin uit" in food["restaurant_name"].lower() and not is_canteen_open else False
         available_foods.append(food)
+        
     if history:
         sum_weights = 0
         sum_calories = 0; sum_pro = 0; sum_carb = 0; sum_fat = 0
@@ -235,6 +243,7 @@ def recommend_meals(request: UserRequest):
             for f in available_foods:
                 item_vector = [f["calories"], f["protein_g"], f["carb_g"], f["fat_g"]]
                 f["similarity_score"] = calculate_cosine_similarity(user_profile_vector, item_vector)
+                
     if request.filter_type == "gia_re":
         available_foods.sort(key=lambda x: (x.get("is_closed", False), x["price"]))
     else:
@@ -256,7 +265,8 @@ def confirm_meal(req: ConfirmRequest):
             cursor.execute("INSERT INTO Foods (name, price, image_url, map_url) VALUES (?, ?, ?, ?)", (req.food_name, req.price, req.image_url, req.map_url))
             food_id_db = cursor.lastrowid
             
-        current_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        # Dùng giờ VN khi lưu lịch sử ăn
+        current_time = get_vn_now().strftime("%Y-%m-%dT%H:%M:%S")
         cursor.execute("INSERT INTO MealHistory (user_id, food_id, price_at_time, eaten_at, rating) VALUES (?, ?, ?, ?, ?)", (req.user_id, food_id_db, req.price, current_time, 0))
         
         new_daily_budget = user['remaining_budget'] - req.price
@@ -286,14 +296,17 @@ def get_stats(user_id: int):
     conn = get_db_connection()
     history = conn.execute('''SELECT mh.eaten_at, mh.price_at_time, f.name as food_name FROM MealHistory mh JOIN Foods f ON mh.food_id = f.food_id WHERE mh.user_id = ?''', (user_id,)).fetchall()
     conn.close()
-    today = datetime.now()
+    
+    today = get_vn_now() # Dùng giờ VN
     last_7_days = [(today - timedelta(days=i)).strftime("%Y-%m-%d") for i in range(6, -1, -1)]
     stats_dict = {d: {"date": d, "spent": 0, "calories": 0} for d in last_7_days}
+    
     for h in history:
         date_str = h['eaten_at'][:10]
         if date_str in stats_dict:
             stats_dict[date_str]["spent"] += h["price_at_time"]
             food_info = next((item for item in foods_data if item["name"] == h['food_name']), None)
             if food_info: stats_dict[date_str]["calories"] += food_info["calories"]
+            
     result = [{"name": datetime.strptime(d, "%Y-%m-%d").strftime("%d/%m"), "Chi tiêu": stats_dict[d]["spent"], "Calo": stats_dict[d]["calories"]} for d in last_7_days]
     return {"stats": result}
