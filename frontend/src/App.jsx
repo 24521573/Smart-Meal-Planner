@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { Moon, MapPin, Calendar, ChevronDown, Clock, Coffee, Utensils, CheckCircle, X, Activity, TrendingDown, Unlock, Star, BarChart2, ExternalLink } from 'lucide-react';
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, LineChart, Line, CartesianGrid, XAxis } from 'recharts';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('login');
@@ -26,7 +25,6 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
-  // ĐƯỜNG DẪN BACKEND RENDER CỦA EM
   const API_BASE_URL = 'https://smart-meal-planner-71ak.onrender.com';
   
   const SESSION_KEY = 'smart_meal_session';
@@ -63,7 +61,7 @@ export default function App() {
   }, []);
 
   const locations = ['Tòa A', 'Tòa B', 'Tòa C', 'Tòa D', 'Tòa E', 'KTX khu A', 'KTX khu B'];
-  const COLORS = ['#ea580c', '#f59e0b', '#3b82f6'];
+  const COLORS = ['#ea580c', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899'];
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -222,7 +220,7 @@ export default function App() {
             <div className="w-12 h-12 bg-[#ea580c] rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-orange-200">🍜</div>
             <h1 className="text-xl font-bold text-gray-900">Smart Meal Planner</h1>
           </div>
-          <h2 className="text-4xl font-extrabold mb-2 text-gray-900">Welcome! 👋</h2>
+          <h2 className="text-4xl font-extrabold mb-2 text-gray-900">Welcome!</h2>
           <p className="text-gray-500 mb-8 font-medium">Nutrition recommendation system</p>
           <div className="flex bg-[#fed7aa] rounded-2xl p-1 mb-8">
             <button className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'login' ? 'bg-[#ea580c] text-white shadow-md' : 'text-[#c2410c] hover:bg-orange-300'}`} onClick={() => { setActiveTab('login'); setError(''); }}>Đăng nhập</button>
@@ -238,11 +236,11 @@ export default function App() {
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="flex items-center gap-2 text-gray-600 font-bold mb-2">👤 Tên đăng nhập</label>
+                <label className="flex items-center gap-2 text-gray-600 font-bold mb-2">Tên đăng nhập</label>
                 <input type="text" required placeholder="Nhập tên đăng nhập" className="w-full border-2 border-orange-100 rounded-2xl p-3 outline-none focus:border-[#ea580c]" value={username} onChange={(e) => setUsername(e.target.value)} />
               </div>
               <div>
-                <label className="flex items-center gap-2 text-gray-600 font-bold mb-2">🔒 Mật khẩu</label>
+                <label className="flex items-center gap-2 text-gray-600 font-bold mb-2">Mật khẩu</label>
                 <input type="password" required placeholder="Nhập mật khẩu" className="w-full border-2 border-orange-100 rounded-2xl p-3 outline-none focus:border-[#ea580c]" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
             </div>
@@ -281,7 +279,7 @@ export default function App() {
                     </select>
                   </div>
                   <div>
-                    <label className="flex items-center gap-2 text-gray-600 font-bold mb-2">💰 Ngân sách/tháng</label>
+                    <label className="flex items-center gap-2 text-gray-600 font-bold mb-2">Ngân sách/tháng</label>
                     <input type="number" required min="10000" placeholder="VD: 3000000" className="w-full border-2 border-orange-100 rounded-2xl p-3 outline-none focus:border-[#ea580c]" value={budget} onChange={(e) => setBudget(e.target.value)} />
                   </div>
                 </div>
@@ -292,7 +290,7 @@ export default function App() {
               </div>
             )}
             <button type="submit" disabled={loading} className="w-full bg-[#ea580c] hover:bg-[#c2410c] text-white font-bold py-4 rounded-2xl mt-4 transition shadow-xl shadow-orange-200/50">
-              {loading ? 'Đang xử lý...' : (activeTab === 'login' ? 'Đăng nhập →' : 'Tạo Profile AI →')}
+              {loading ? 'Đang xử lý...' : (activeTab === 'login' ? 'Đăng nhập' : 'Tạo Profile AI')}
             </button>
           </form>
         </div>
@@ -304,35 +302,57 @@ export default function App() {
     <div className="min-h-screen bg-[#fff8f0] font-sans text-gray-800 pb-10">
       {user?.streak >= 3 && (
         <div className="fixed left-4 top-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-md p-3 rounded-full shadow-[0_0_20px_rgba(234,88,12,0.3)] border-2 border-orange-200 flex flex-col items-center gap-1 z-40 animate-bounce cursor-pointer group hover:bg-orange-50 transition-colors">
-          <div className="text-4xl animate-pulse group-hover:scale-110 transition-transform">🔥</div>
           <p className="font-black text-[#ea580c] text-lg leading-none mt-1">{user.streak}</p>
           <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Ngày</p>
           <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 w-max bg-gray-800 text-white text-xs font-bold px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            Bạn đang có chuỗi {user.streak} ngày rực cháy!
+            Bạn đang có chuỗi {user.streak} ngày!
           </div>
         </div>
       )}
       {showHistory && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
           <div className="bg-white w-full max-w-lg rounded-[30px] p-6 md:p-8 shadow-2xl relative animate-in zoom-in duration-200">
-             <button onClick={() => setShowHistory(false)} className="absolute top-6 right-6 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-500 hover:bg-gray-200 hover:text-red-500 transition"><X size={20} /></button>
-             <h2 className="text-2xl font-extrabold text-[#ea580c] mb-6 flex items-center gap-3"><Calendar className="text-orange-400"/> Lịch sử & Đánh giá</h2>
+             <button onClick={() => setShowHistory(false)} className="absolute top-6 right-6 px-4 py-2 bg-gray-100 rounded-xl font-bold text-gray-500 hover:bg-gray-200 hover:text-red-500 transition">ĐÓNG</button>
+             <h2 className="text-2xl font-extrabold text-[#ea580c] mb-6">Lịch sử & Đánh giá</h2>
              <div className="max-h-[60vh] overflow-y-auto pr-2 space-y-4 scrollbar-thin">
                 {historyList.length === 0 ? (
-                   <div className="text-center py-12"><p className="text-6xl mb-4">🍽️</p><p className="text-gray-500 font-medium">Bạn chưa xác nhận ăn món nào cả!</p></div>
+                   <div className="text-center py-12"><p className="text-gray-500 font-medium">Bạn chưa xác nhận ăn món nào cả!</p></div>
                 ) : (
                    historyList.map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center bg-orange-50/50 p-5 rounded-2xl border border-orange-100 hover:border-orange-300 transition">
-                         <div>
-                           <p className="font-bold text-gray-800 text-lg">{item.food_name ? item.food_name : 'Đang cập nhật tên món'}</p>
-                           <p className="text-sm text-gray-500 flex items-center gap-1.5 mt-1.5 mb-2"><Clock size={14} className="text-orange-400"/> {formatHistoryTime(item.eaten_at)}</p>
+                      <div key={idx} className="flex flex-col gap-3 bg-orange-50/50 p-5 rounded-2xl border border-orange-100 hover:border-orange-300 transition">
+                         <div className="flex justify-between items-start">
+                           <div>
+                             <p className="font-bold text-gray-800 text-lg">{item.food_name ? item.food_name : 'Đang cập nhật tên món'}</p>
+                             <p className="text-sm text-gray-500 mt-1.5 mb-2">{formatHistoryTime(item.eaten_at)}</p>
+                           </div>
+                           <p className="font-black text-[#ea580c] bg-white px-4 py-2 rounded-xl shadow-sm border border-orange-50">{Number(item.price_at_time).toLocaleString()}đ</p>
+                         </div>
+                         <div className="flex gap-2 border-t border-orange-100 pt-3 items-center">
+                           <span className="text-sm font-bold text-gray-500 mr-2">Đánh giá: </span>
                            <div className="flex gap-1">
                              {[1, 2, 3, 4, 5].map((star) => (
-                               <Star key={star} size={18} onClick={() => handleRate(item.history_id, star)} className={`cursor-pointer transition-colors ${star <= (item.rating || 0) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300 hover:text-yellow-200'}`} />
+                               <button 
+                                 key={star} 
+                                 onClick={() => handleRate(item.history_id, star)} 
+                                 className="focus:outline-none transition-transform hover:scale-110"
+                                 title={`${star} Sao`}
+                               >
+                                 <svg 
+                                   xmlns="http://www.w3.org/2000/svg" 
+                                   viewBox="0 0 24 24" 
+                                   fill={star <= (item.rating || 0) ? "#facc15" : "none"} 
+                                   stroke={star <= (item.rating || 0) ? "#facc15" : "#d1d5db"} 
+                                   strokeWidth="2" 
+                                   strokeLinecap="round" 
+                                   strokeLinejoin="round" 
+                                   className="w-7 h-7"
+                                 >
+                                   <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                 </svg>
+                               </button>
                              ))}
                            </div>
                          </div>
-                         <p className="font-black text-[#ea580c] bg-white px-4 py-2 rounded-xl shadow-sm border border-orange-50">{Number(item.price_at_time).toLocaleString()}đ</p>
                       </div>
                    ))
                 )}
@@ -343,11 +363,11 @@ export default function App() {
       {showStats && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex justify-center items-center p-4">
           <div className="bg-white w-full max-w-4xl rounded-[30px] p-6 md:p-8 shadow-2xl relative animate-in zoom-in duration-200">
-             <button onClick={() => setShowStats(false)} className="absolute top-6 right-6 w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center font-bold text-gray-500 hover:bg-gray-200 hover:text-red-500 transition"><X size={20} /></button>
-             <h2 className="text-2xl font-extrabold text-[#16a34a] mb-6 flex items-center gap-3"><BarChart2 className="text-green-500"/> Thống kê 7 ngày gần nhất</h2>
+             <button onClick={() => setShowStats(false)} className="absolute top-6 right-6 px-4 py-2 bg-gray-100 rounded-xl font-bold text-gray-500 hover:bg-gray-200 hover:text-red-500 transition">ĐÓNG</button>
+             <h2 className="text-2xl font-extrabold text-[#16a34a] mb-6">Thống kê 7 ngày gần nhất</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
                 <div className="bg-green-50/30 p-4 rounded-2xl border border-green-50">
-                   <h3 className="font-bold text-gray-700 text-center mb-6">📉 Lịch sử Chi tiêu (VNĐ)</h3>
+                   <h3 className="font-bold text-gray-700 text-center mb-6">Lịch sử Chi tiêu (VNĐ)</h3>
                    <div className="h-64 w-full">
                      <ResponsiveContainer width="100%" height="100%">
                        <BarChart data={statsData}>
@@ -360,7 +380,7 @@ export default function App() {
                    </div>
                 </div>
                 <div className="bg-orange-50/30 p-4 rounded-2xl border border-orange-50">
-                   <h3 className="font-bold text-gray-700 text-center mb-6">🔥 Lượng Calo nạp vào</h3>
+                   <h3 className="font-bold text-gray-700 text-center mb-6">Lượng Calo nạp vào</h3>
                    <div className="h-64 w-full">
                      <ResponsiveContainer width="100%" height="100%">
                        <LineChart data={statsData}>
@@ -403,7 +423,6 @@ export default function App() {
               <p className="text-gray-500 font-bold tracking-wide text-xs">NGÂN SÁCH HÔM NAY</p>
               <div className="flex gap-2">
                 <button onClick={handleTopUp} className="w-8 h-8 bg-green-100 hover:bg-green-200 rounded-full flex items-center justify-center text-green-700 font-black transition shadow-sm" title="Ứng tiền từ quỹ tháng">+</button>
-                <div className="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center text-green-600 text-sm">💰</div>
               </div>
             </div>
             <p className="text-2xl font-extrabold text-[#16a34a] mb-2 transition-all duration-500">{Number(user?.remaining_budget || 0).toLocaleString()} đ</p>
@@ -412,7 +431,6 @@ export default function App() {
             </div>
             <div className="flex justify-between items-start mb-2 pt-2 border-t border-gray-100">
               <p className="text-gray-500 font-bold tracking-wide text-xs">CALO TRONG NGÀY (TDEE)</p>
-              <div className="w-8 h-8 bg-orange-50 rounded-full flex items-center justify-center text-orange-600 text-sm"><Activity size={14}/></div>
             </div>
             <p className="text-2xl font-extrabold text-[#ea580c] mb-2 transition-all duration-500">{Math.round(user?.remaining_calories || 0)} kcal</p>
             <div className="w-full bg-gray-100 rounded-full h-2 mb-1">
@@ -423,41 +441,39 @@ export default function App() {
              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-xl"></div>
              <p className="font-bold tracking-wide text-sm text-orange-100 mb-6">BỮA ĂN HIỆN TẠI</p>
              <div className="flex items-center gap-4 mb-8">
-                {currentTime.getHours() >= 17 ? <Moon size={40} className="text-yellow-300" /> : <Coffee size={40} className="text-yellow-300" />}
                 <div>
                   <h3 className="text-3xl font-extrabold">{currentTime.getHours() >= 17 ? 'Bữa Tối' : (currentTime.getHours() >= 11 ? 'Bữa Trưa' : 'Bữa Sáng')}</h3>
                   <p className="text-orange-200 font-medium mt-1">Phục vụ theo giờ</p>
                 </div>
              </div>
-             <div className="bg-black/20 backdrop-blur-sm inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium"><Clock size={16} /> Hiện tại: {formatTime(currentTime)}</div>
+             <div className="bg-black/20 backdrop-blur-sm inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium">Hiện tại: {formatTime(currentTime)}</div>
           </div>
           <div className="bg-white rounded-3xl p-6 shadow-xl shadow-orange-100/50 border border-orange-50 flex flex-col justify-between">
-             <p className="text-gray-500 font-bold tracking-wide text-sm mb-4 flex items-center gap-2"><MapPin size={16} className="text-pink-500"/> VỊ TRÍ CỦA TÔI</p>
+             <p className="text-gray-500 font-bold tracking-wide text-sm mb-4 flex items-center gap-2">VỊ TRÍ CỦA TÔI</p>
              <div className="relative mb-4">
                 <select className="w-full appearance-none border-2 border-orange-100 rounded-2xl p-4 font-bold text-lg text-gray-800 outline-none focus:border-[#ea580c] bg-transparent" value={location} onChange={(e) => setLocation(e.target.value)}>
                   {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
                 </select>
-                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
              </div>
              <div className="flex gap-2">
                 <button onClick={() => setFilterType('dinh_duong')} className={`flex-1 px-2 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-1.5 transition ${filterType === 'dinh_duong' ? 'bg-[#ea580c] text-white shadow-md' : 'bg-orange-50 text-orange-800 hover:bg-orange-100'}`}>
-                  <Activity size={14}/> Theo Dinh dưỡng
+                  Theo Dinh dưỡng
                 </button>
                 <button onClick={() => setFilterType('gia_re')} className={`flex-1 px-2 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-1.5 transition ${filterType === 'gia_re' ? 'bg-[#16a34a] text-white shadow-md' : 'bg-green-50 text-green-800 hover:bg-green-100'}`}>
-                  <TrendingDown size={14}/> Theo Giá rẻ
+                  Theo Giá rẻ
                 </button>
              </div>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
           <button onClick={fetchMeals} disabled={loading} className="w-full bg-[#ea580c] hover:bg-[#c2410c] text-white text-lg font-bold py-4 rounded-2xl shadow-xl shadow-orange-200/50 transition flex items-center justify-center gap-2">
-            {loading ? <span className="animate-pulse">Đang phân tích...</span> : <><Utensils size={20} /> Đề xuất món ăn</>}
+            {loading ? <span className="animate-pulse">Đang phân tích...</span> : <>Đề xuất món ăn</>}
           </button>
           <button onClick={fetchHistory} className="w-full bg-white hover:bg-gray-50 text-gray-700 text-lg font-bold py-4 rounded-2xl shadow-lg shadow-orange-100/30 border border-orange-100 transition flex items-center justify-center gap-2">
-            <Calendar size={20} className="text-orange-500" /> Lịch sử hôm nay
+            Lịch sử hôm nay
           </button>
           <button onClick={fetchStats} className="w-full bg-white hover:bg-gray-50 text-gray-700 text-lg font-bold py-4 rounded-2xl shadow-lg shadow-green-100/30 border border-green-100 transition flex items-center justify-center gap-2">
-            <BarChart2 size={20} className="text-green-600" /> Thống kê tuần
+            Thống kê tuần
           </button>
         </div>
         {error && <p className="text-red-500 text-center font-bold mt-6 bg-red-50 p-4 rounded-2xl border border-red-100">{error}</p>}
@@ -491,11 +507,11 @@ export default function App() {
                         <span className={`text-sm font-bold px-4 py-2 rounded-xl flex items-center gap-2 ${
                           isClosed ? 'bg-gray-200 text-gray-600' : (!canAfford ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-700')
                         }`}>
-                          {isClosed ? <><X size={16}/> ĐÃ ĐÓNG CỬA</> : (!canAfford ? <><X size={16}/> VƯỢT NGÂN SÁCH</> : <><Unlock size={16}/> ĐANG MỞ CỬA</>)}
+                          {isClosed ? <>ĐÃ ĐÓNG CỬA</> : (!canAfford ? <>VƯỢT NGÂN SÁCH</> : <>ĐANG MỞ CỬA</>)}
                         </span>
                       </div>
                       <button onClick={() => handleConfirm(food)} disabled={!isAvailable} className={`px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition w-full sm:w-auto ${isAvailable ? 'bg-[#16a34a] text-white hover:bg-green-700 shadow-lg shadow-green-200/50' : 'bg-gray-200 text-gray-500 cursor-not-allowed'}`}>
-                        {isClosed ? <><X size={18}/> Đóng cửa</> : (!canAfford ? <><X size={18}/> Hết tiền</> : <><CheckCircle size={18}/> Xác nhận ăn</>)}
+                        {isClosed ? <>Đóng cửa</> : (!canAfford ? <>Hết tiền</> : <>Xác nhận ăn</>)}
                       </button>
                     </div>
                     <div className="flex flex-col md:flex-row gap-8 items-center">
@@ -504,29 +520,30 @@ export default function App() {
                         <div className="flex flex-col mb-4">
                           <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Địa chỉ</span>
                           <a href={food.map_url || '#'} target="_blank" rel="noopener noreferrer" className={`flex items-center gap-2 font-medium transition-all group w-max ${isAvailable ? 'text-blue-600 hover:text-blue-800' : 'text-gray-500 pointer-events-none'}`}>
-                            <MapPin size={18} className="text-pink-500"/>
                             <span className="group-hover:underline">{food.restaurant_name}</span>
-                            {isAvailable && <ExternalLink size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
                           </a>
                         </div>
                         <div className="bg-white px-4 py-3 rounded-xl inline-block w-max mb-4 shadow-sm">
-                          <p className={`font-extrabold text-xl ${isAvailable ? 'text-gray-800' : 'text-gray-400 line-through'}`}>💰 {Number(food.price || 0).toLocaleString()} VNĐ</p>
+                          <p className={`font-extrabold text-xl ${isAvailable ? 'text-gray-800' : 'text-gray-400 line-through'}`}>{Number(food.price || 0).toLocaleString()} VNĐ</p>
                         </div>
                       </div>
-                      <div className={!isAvailable ? 'opacity-60 grayscale' : ''} style={{width: 150}}>
-                        <h3 className="font-bold text-gray-700 text-center mb-4 text-xs tracking-wider">TỶ LỆ DINH DƯỠNG</h3>
-                        <div className="h-36 w-full">
+                      <div className={!isAvailable ? 'opacity-60 grayscale' : ''} style={{width: 170}}>
+                        <h3 className="font-bold text-gray-700 text-center mb-4 text-xs tracking-wider">TỶ LỆ DINH DƯỠNG (6D)</h3>
+                        <div className="h-44 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                               <Pie data={[
+                                  { name: 'Calo (kcal)', value: Number(food.calories || 0) },
                                   { name: 'Protein (g)', value: Number(food.protein_g || 0) },
                                   { name: 'Carb (g)', value: Number(food.carb_g || 0) },
-                                  { name: 'Fat (g)', value: Number(food.fat_g || 0) }
+                                  { name: 'Fat (g)', value: Number(food.fat_g || 0) },
+                                  { name: 'Fiber (g)', value: Number(food.fiber_g || 0) },
+                                  { name: 'Vitamin (mg)', value: Number(food.vitamins_mg || 0) }
                                 ]} cx="50%" cy="50%" innerRadius={35} outerRadius={50} fill="#8884d8" paddingAngle={2} dataKey="value">
-                                {[0, 1, 2].map((entry, index) => <Cell key={`cell-${index}`} fill={isAvailable ? COLORS[index % COLORS.length] : '#9ca3af'} />)}
+                                {[0, 1, 2, 3, 4, 5].map((entry, index) => <Cell key={`cell-${index}`} fill={isAvailable ? COLORS[index % COLORS.length] : '#9ca3af'} />)}
                               </Pie>
                               <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}/>
-                              <Legend verticalAlign="bottom" height={36} iconSize={8} wrapperStyle={{fontSize: 10}} iconType="circle"/>
+                              <Legend verticalAlign="bottom" height={40} iconSize={8} wrapperStyle={{fontSize: 9}} iconType="circle"/>
                             </PieChart>
                           </ResponsiveContainer>
                         </div>

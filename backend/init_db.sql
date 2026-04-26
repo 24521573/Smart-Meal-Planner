@@ -25,6 +25,8 @@ CREATE TABLE Foods (
     protein_g DECIMAL(5, 2),
     carb_g DECIMAL(5, 2),
     fat_g DECIMAL(5, 2),
+    fiber_g DECIMAL(5, 2),   
+    vitamins_mg DECIMAL(5, 2), 
     allergens VARCHAR(200),
     FOREIGN KEY (restaurant_id) REFERENCES Restaurants(restaurant_id)
 );
