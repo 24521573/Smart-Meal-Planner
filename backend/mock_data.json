@@ -30,21 +30,6 @@
     "allergens": "nước mắm, đậu phộng"
   },
   {
-    "name": "Cơm chiên",
-    "restaurant_name": "Cơm chiên Hoàn Mỹ",
-    "price": 25000,
-    "calories": 500,
-    "protein_g": 15,
-    "carb_g": 70,
-    "fat_g": 17,
-    "fiber_g": 1.0,
-    "vitamins_mg": 5,
-    "location": ["Tòa A", "Tòa B", "Tòa E"],
-    "map_url": "https://maps.app.goo.gl/rH9MRUWzoXmUJ2GV8",
-    "image_url": "https://scontent.fcxr1-1.fna.fbcdn.net/v/t39.30808-6/627385310_122274935354197261_8263347469766091028_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=e06c5d&_nc_eui2=AeGXj-zCfYRlKWqXA7sQ2rtTCwyqi_aZ9fELDKqL9pn18fsd7b3ereIZrTzuVINfsz7bPRpWSpdqMqhgQXOD3i5C&_nc_ohc=ukExVnUhCjgQ7kNvwF0aFT_&_nc_oc=AdqvkcKl8wSmon04P5gPEdskY3Zi6ZZZICijcXJAJwxqMgnVAEcMZaD1-YZoZcxbbyI&_nc_zt=23&_nc_ht=scontent.fcxr1-1.fna&_nc_gid=z8nCaXoyBaWgtRJMMxeF7A&_nc_ss=7a3a8&oh=00_Af2G9Yv-_a2tMYb05N6cQmh2nzFMjGQyhXimfVKV0JMX0Q&oe=69D90AB7",
-    "allergens": "trứng, đậu nành"
-  },
-  {
     "name": "Cơm tấm",
     "restaurant_name": "Cơm tấm Ngô Quyền cổng A UIT",
     "price": 30000,
@@ -55,7 +40,7 @@
     "fiber_g": 1.2,
     "vitamins_mg": 7,
     "location": ["Tòa A", "Tòa B", "Tòa E"],
-    "map_url": "https://maps.app.goo.gl/dM87uyMM5W1yfZW76",
+    "map_url": "https://maps.app.goo.gl/rH9MRUWzoXmUJ2GV8",
     "image_url": "https://down-vn.img.susercontent.com/vn-11134259-7r98o-lw9t6yr2b00p6f@resize_ss640x400",
     "allergens": "trứng, nước mắm"
   },

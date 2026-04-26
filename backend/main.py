@@ -80,7 +80,6 @@ class RateRequest(BaseModel):
 class TopUpRequest(BaseModel):
     user_id: int; amount: float
 
-# Luôn lấy giờ Việt Nam (UTC+7) bất kể server đặt ở đâu
 def get_vn_now():
     return datetime.now(timezone(timedelta(hours=7)))
 
@@ -227,13 +226,12 @@ def recommend_meals(request: UserRequest):
         
     if history:
         sum_weights = 0
-        sum_calories = 0; sum_pro = 0; sum_carb = 0; sum_fat = 0; sum_fiber = 0; sum_vitamins = 0
+        sum_pro = 0; sum_carb = 0; sum_fat = 0; sum_fiber = 0; sum_vitamins = 0
         for h in history:
             food_info = next((item for item in foods_data if item["name"] == h['name']), None)
             if food_info:
                 weight = h['rating'] if h['rating'] > 0 else 3
                 sum_weights += weight
-                sum_calories += food_info["calories"] * weight
                 sum_pro += food_info["protein_g"] * weight
                 sum_carb += food_info["carb_g"] * weight
                 sum_fat += food_info["fat_g"] * weight
@@ -241,8 +239,8 @@ def recommend_meals(request: UserRequest):
                 sum_vitamins += food_info.get("vitamins_mg", 0) * weight
                 
         if sum_weights > 0:
+            # Gỡ Calo ra khỏi mảng, chỉ tính toán Vector 5D
             user_profile_vector = [
-                sum_calories / sum_weights, 
                 sum_pro / sum_weights, 
                 sum_carb / sum_weights, 
                 sum_fat / sum_weights,
@@ -251,7 +249,6 @@ def recommend_meals(request: UserRequest):
             ]
             for f in available_foods:
                 item_vector = [
-                    f["calories"], 
                     f["protein_g"], 
                     f["carb_g"], 
                     f["fat_g"],
