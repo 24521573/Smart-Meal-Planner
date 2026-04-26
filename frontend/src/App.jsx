@@ -61,7 +61,8 @@ export default function App() {
   }, []);
 
   const locations = ['Tòa A', 'Tòa B', 'Tòa C', 'Tòa D', 'Tòa E', 'KTX khu A', 'KTX khu B'];
-  const COLORS = ['#ea580c', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6', '#ec4899'];
+  // Cập nhật lại 5 màu cho 5 vi chất
+  const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -221,7 +222,7 @@ export default function App() {
             <h1 className="text-xl font-bold text-gray-900">Smart Meal Planner</h1>
           </div>
           <h2 className="text-4xl font-extrabold mb-2 text-gray-900">Welcome!</h2>
-          <p className="text-gray-500 mb-8 font-medium">Nutrition recommendation system</p>
+          <p className="text-gray-500 mb-8 font-medium">Nutrition Recommendation System</p>
           <div className="flex bg-[#fed7aa] rounded-2xl p-1 mb-8">
             <button className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'login' ? 'bg-[#ea580c] text-white shadow-md' : 'text-[#c2410c] hover:bg-orange-300'}`} onClick={() => { setActiveTab('login'); setError(''); }}>Đăng nhập</button>
             <button className={`flex-1 py-3 rounded-xl font-bold text-sm transition-all ${activeTab === 'register' ? 'bg-[#ea580c] text-white shadow-md' : 'text-[#c2410c] hover:bg-orange-300'}`} onClick={() => { setActiveTab('register'); setError(''); }}>Đăng ký</button>
@@ -290,7 +291,7 @@ export default function App() {
               </div>
             )}
             <button type="submit" disabled={loading} className="w-full bg-[#ea580c] hover:bg-[#c2410c] text-white font-bold py-4 rounded-2xl mt-4 transition shadow-xl shadow-orange-200/50">
-              {loading ? 'Đang xử lý...' : (activeTab === 'login' ? 'Đăng nhập' : 'Tạo Profile AI')}
+              {loading ? 'Đang xử lý...' : (activeTab === 'login' ? 'Đăng nhập' : 'Đăng ký')}
             </button>
           </form>
         </div>
@@ -454,6 +455,9 @@ export default function App() {
                 <select className="w-full appearance-none border-2 border-orange-100 rounded-2xl p-4 font-bold text-lg text-gray-800 outline-none focus:border-[#ea580c] bg-transparent" value={location} onChange={(e) => setLocation(e.target.value)}>
                   {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
                 </select>
+                <svg xmlns="http://www.w3.org/2000/svg" className="absolute right-4 top-1/2 -translate-y-1/2 w-6 h-6 text-orange-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
              </div>
              <div className="flex gap-2">
                 <button onClick={() => setFilterType('dinh_duong')} className={`flex-1 px-2 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-1.5 transition ${filterType === 'dinh_duong' ? 'bg-[#ea580c] text-white shadow-md' : 'bg-orange-50 text-orange-800 hover:bg-orange-100'}`}>
@@ -528,22 +532,24 @@ export default function App() {
                         </div>
                       </div>
                       <div className={!isAvailable ? 'opacity-60 grayscale' : ''} style={{width: 170}}>
-                        <h3 className="font-bold text-gray-700 text-center mb-4 text-xs tracking-wider">TỶ LỆ DINH DƯỠNG (6D)</h3>
-                        <div className="h-44 w-full">
+                        <h3 className="font-bold text-gray-500 text-center mb-1 text-xs tracking-wider">TỶ LỆ DINH DƯỠNG (5D)</h3>
+                        
+                        <p className="text-center font-black text-[#ea580c] text-lg mb-1"> {Number(food.calories || 0)} kcal</p>
+                        
+                        <div className="h-40 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <PieChart>
                               <Pie data={[
-                                  { name: 'Calo (kcal)', value: Number(food.calories || 0) },
                                   { name: 'Protein (g)', value: Number(food.protein_g || 0) },
                                   { name: 'Carb (g)', value: Number(food.carb_g || 0) },
                                   { name: 'Fat (g)', value: Number(food.fat_g || 0) },
                                   { name: 'Fiber (g)', value: Number(food.fiber_g || 0) },
                                   { name: 'Vitamin (mg)', value: Number(food.vitamins_mg || 0) }
-                                ]} cx="50%" cy="50%" innerRadius={35} outerRadius={50} fill="#8884d8" paddingAngle={2} dataKey="value">
-                                {[0, 1, 2, 3, 4, 5].map((entry, index) => <Cell key={`cell-${index}`} fill={isAvailable ? COLORS[index % COLORS.length] : '#9ca3af'} />)}
+                                ]} cx="50%" cy="50%" innerRadius={30} outerRadius={45} fill="#8884d8" paddingAngle={2} dataKey="value">
+                                {[0, 1, 2, 3, 4].map((entry, index) => <Cell key={`cell-${index}`} fill={isAvailable ? COLORS[index % COLORS.length] : '#9ca3af'} />)}
                               </Pie>
-                              <Tooltip contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}/>
-                              <Legend verticalAlign="bottom" height={40} iconSize={8} wrapperStyle={{fontSize: 9}} iconType="circle"/>
+                              <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #e5e7eb', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}/>
+                              <Legend verticalAlign="bottom" height={40} iconSize={8} wrapperStyle={{fontSize: 9, color: '#4b5563'}} iconType="circle"/>
                             </PieChart>
                           </ResponsiveContainer>
                         </div>
